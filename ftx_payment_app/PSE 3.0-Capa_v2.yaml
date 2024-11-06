@@ -35,7 +35,8 @@ paths:
       operationId: InitiatePayment
       parameters:
         - $ref: '#/components/parameters/message-uuid'
-        - $ref: '#/components/parameters/request-app-id'          
+        - $ref: '#/components/parameters/request-app-id'
+        - $ref: '#/components/parameters/session-storage'          
       requestBody:
         $ref: '#/components/requestBodies/CreateTransactionPaymentRequest'
       responses:
@@ -66,7 +67,8 @@ paths:
       operationId: ExecutePayment
       parameters:
         - $ref: '#/components/parameters/message-uuid'
-        - $ref: '#/components/parameters/request-app-id'          
+        - $ref: '#/components/parameters/request-app-id'
+        - $ref: '#/components/parameters/session-storage'          
       requestBody:
         $ref: '#/components/requestBodies/InitBankPaymentRequest'
       responses:
@@ -127,7 +129,7 @@ components:
     CreateTransactionPaymentRequest:
       required:
         - group_header
-        - paymentInformation
+        - payment_Information
       type: object
       properties:
         group_header:
@@ -138,7 +140,7 @@ components:
     InitBankPaymentRequest:
       required:
         - group_header
-        - paymentInformation
+        - payment_Information
       type: object
       properties:
         group_header:
@@ -149,7 +151,7 @@ components:
     NotifyPaymentRequest:
       required:
         - group_header
-        - paymentInformation
+        - payment_Information
       type: object
       properties:
         group_header:
@@ -165,13 +167,17 @@ components:
       type: object
       properties:
         group_header:
-          ##Conjunto de características compartidas por una transacción individual incluida en el mensaje
+          ##Conjunto de caracterÃ­sticas compartidas por una transacciÃ³n individual incluida en el mensaje
           $ref: '#/components/schemas/GroupHeader'
         original_payment_information_and_status:
           type: array
           items:
-            #Objeto que representa el resultado de la transacción
+            #Objeto que representa el resultado de la transacciÃ³n
             $ref: '#/components/schemas/OriginalPaymentInformationAndStatus'
+                           
+                     
+                
+                                                          
             
     InitBankPaymentResponse:
       required:
@@ -180,12 +186,12 @@ components:
       type: object
       properties:
         group_header:
-          ##Conjunto de características compartidas por una transacción individual incluida en el mensaje
+          ##Conjunto de caracterÃ­sticas compartidas por una transacciÃ³n individual incluida en el mensaje
           $ref: '#/components/schemas/GroupHeader'
         original_payment_information_and_status:
           type: array
           items:
-            #Objeto que representa el resultado de la transacción
+            #Objeto que representa el resultado de la transacciÃ³n
             $ref: '#/components/schemas/OriginalPaymentInformationAndStatusV2'
             
     NotifyPaymentResponse:
@@ -195,12 +201,12 @@ components:
       type: object
       properties:
         group_header:
-          ##Conjunto de características compartidas por una transacción individual incluida en el mensaje
+          ##Conjunto de caracterÃ­sticas compartidas por una transacciÃ³n individual incluida en el mensaje
           $ref: '#/components/schemas/GroupHeader'
         original_payment_information_and_status:
           type: array
           items:
-            #Objeto que representa el resultado de la transacción
+            #Objeto que representa el resultado de la transacciÃ³n
             $ref: '#/components/schemas/OriginalPaymentInformationAndStatus'
     
     GroupHeader:
@@ -608,6 +614,13 @@ components:
           minLength: 1
           maxLength: 2
           example: 01
+          
+                      
+                                                                         
+                      
+                      
+                      
+                    
         
         device_finger_print:
           description: Fingerprint with the information captured by the list of banks or the agile payment dialing list through a dynamic Javascript that was integrated into the new PSE site to which end users are directed. This javascript is a coded string that includes information from the device of the user who performs the transaction.
@@ -703,7 +716,7 @@ components:
           example: Pago factura
           
     Tax:
-    #modela información sobre información tributaria
+    #modela informaciÃ³n sobre informaciÃ³n tributaria
       type: object
       properties:
         total_taxable_base_amount:
@@ -782,6 +795,8 @@ components:
       properties:
         identification:
           $ref: '#/components/schemas/IdentificationV3'
+                      
+                             
           
           
     CreditTransferTransactionInformation:
@@ -800,7 +815,7 @@ components:
         
     
     PaymentIdentification:
-      #Conjunto de elementos usados para referenciar una instrucción de pago.
+      #Conjunto de elementos usados para referenciar una instrucciÃ³n de pago.
       type: object
       properties:
         instruction_identification:
@@ -823,7 +838,7 @@ components:
           
           
     Creditor:
-      #Modela información de un acreedor
+      #Modela informaciÃ³n de un acreedor
       type: object
       properties:
         name:
@@ -1027,7 +1042,7 @@ components:
           type: string
           minLength: 1
           maxLength: 256
-          example: Ocurrió un error en el módulo de pagos de la entidad Bancaria.
+          example: OcurriÃ³ un error en el mÃ³dulo de pagos de la entidad Bancaria.
           
     
           
@@ -1056,7 +1071,7 @@ components:
           type: string
           minLength: 1
           maxLength: 140
-          example: Error en la transacción
+          example: Error en la transacciÃ³n
             
     #pattern: "[A-Z0-9]{4,4}[A-Z]{2,2}[A-Z-9]{2,2}([A-Z0-9]{3,3]){0,1}"
     
@@ -1089,6 +1104,17 @@ components:
       schema:
         type: string
         format: uuid
+        
+    session-storage:
+      #unique id of transaction
+      name: session-storage
+      description:
+        Message identifier is used for traceability. Token sesión generado por navegador - (Se recomiendo generar el token como un UUID - sessionStorage.setItem('Token', UUID)).
+      in: header
+      required: true
+      style: simple
+      schema:
+        type: string
         
   requestBodies:
     CreateTransactionPaymentRequest:
